@@ -112,8 +112,8 @@ export class Atmosphere {
     eu.cloudCoverage.value = 0;
     for (const u of [su, eu]) {
       const isEnv = u === eu;   // the ambient light is whiter and less blue than the visible sky
-      u.turbidity.value = Math.max(0.6, turb) + (isEnv ? 2.2 : 0);
-      u.rayleigh.value = rayl * (isEnv ? 0.55 : 1);
+      u.turbidity.value = Math.max(0.6, turb) + (isEnv ? 5 : 0);
+      u.rayleigh.value = rayl * (isEnv ? 0.35 : 1);
       u.mieCoefficient.value = mie;
       u.mieDirectionalG.value = 0.82;
       u.sunPosition.value.copy(dir);
@@ -132,9 +132,9 @@ export class Atmosphere {
     this.moon.intensity = 0.55 * night;
     this.moon.visible = this.moon.intensity > 0.01;
     const tw = smooth(-11, -2, alt) * (1 - smooth(1, 10, alt));   // twilight: skylight with no sun
-    this.fill.intensity = lerp(0.22 * night + 0.05, 0.12, day) + 0.75 * tw;
-    this.fill.color.setHex(0xaec7ee).lerp(_tmp.setHex(0x1b2a55), night).lerp(_tmp.setHex(0x8f93c4), tw * 0.8);
-    this.fill.groundColor.setHex(0x5b6340).lerp(_tmp.setHex(0x0c0f12), night).lerp(_tmp.setHex(0x4a3b36), tw * 0.7);
+    this.fill.intensity = lerp(0.22 * night + 0.05, 0.55, day) + 0.75 * tw;
+    this.fill.color.setHex(0xf3eee4).lerp(_tmp.setHex(0x1b2a55), night).lerp(_tmp.setHex(0x8f93c4), tw * 0.8);
+    this.fill.groundColor.setHex(0x9a8a5e).lerp(_tmp.setHex(0x0c0f12), night).lerp(_tmp.setHex(0x4a3b36), tw * 0.7);
 
     // fog follows horizon colour
     keyColor(FOG_KEYS, alt, this.fogColor);
@@ -149,7 +149,7 @@ export class Atmosphere {
     // exposure: bright days sit lower, night is lifted
     this.exposureTarget = lerp(1.25, lerp(0.72, 0.5, smooth(5, 35, alt)), smooth(-10, 2, alt));
     this.renderer.toneMappingExposure = this.exposureTarget;
-    this.scene.environmentIntensity = lerp(0.35, 0.3, day) + 0.28 * day * (1 - smooth(0, 16, alt));
+    this.scene.environmentIntensity = lerp(0.35, 0.07, day) + 0.28 * day * (1 - smooth(0, 16, alt));
     this._envDirty = true;
   }
 
